@@ -1,2 +1,3 @@
 *.pcap.gz
 *.csv
+sftp-config.json
