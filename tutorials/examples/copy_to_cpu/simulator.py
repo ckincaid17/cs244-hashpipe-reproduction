@@ -1,8 +1,8 @@
 #!/bin/bash
+
 import numpy as np
 import sys
 import pdb
-
 import socket, struct
 
 def ip2long(ip):
@@ -12,8 +12,9 @@ def ip2long(ip):
     packedIP = socket.inet_aton(ip)
     return struct.unpack("!L", packedIP)[0]
 
+k = 8
 d = 6
-memorySize = 60
+memorySize = 600
 memoryPerTableSlot = 2 
 slotsPerTable = int((memorySize / d) / memoryPerTableSlot)
 
@@ -83,23 +84,31 @@ def main():
   with open('header_fields.csv', 'r') as f:
     for line in f:
       fields = line.split(',')
-      if len(fields) != 5:
+      ipSrc = fields[0]
+      if len(fields) != 5 or not ipSrc:
         continue
       # Don't let multiplying by a prime cause overflow
-      numPreservedHashBits = sys.getsizeof(int()) - 12
-      hashMask = (1 << numPreservedHashBits) - 1
+      # numPreservedHashBits = sys.getsizeof(int()) - 12
+      # hashMask = (1 << numPreservedHashBits) - 1
       # pdb.set_trace()
-      flowId = ip2long(fields[0])
+      flowId = ip2long(ipSrc)
+
       # flowId = hash(tuple(fields)) & hashMask
       carriedPacket = insertInFirstStage(flowTables, flowId)
-      # Assume stage 0 is first stage
+      # Assume stage 0 was first stage
       stage = 1
       while carriedPacket and stage < d:
         carriedPacket = updateRollingMinimum(flowTables, carriedPacket, stage)
         stage += 1
   
-  print(np.amax(flowTables))
-  pdb.set_trace() 
+  # pdb.set_trace()
+  flowIds, flowCounts = np.split(flowTables, 2, axis=2)
+  indices = np.argpartition(flowCounts.flatten(), -k)[-k:]
+  heavyHitters = flowIds.flatten()[np.argpartition(flowCounts.flatten(), -k)[-k:]]
+  # TODO address duplicates
+  # Change to append mode when dealing with multiple files
+  with open('heavy_hitters_simulated.csv', 'w') as f:
+    f.write(','.join([str(flow) for flow in heavyHitters]))
 
 if __name__ == '__main__':
   main()

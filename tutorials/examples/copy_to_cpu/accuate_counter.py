@@ -1,8 +1,8 @@
 #!/bin/bash
-import numpy as np
+
+from collections import Counter
 import sys
 import pdb
-
 import socket, struct
 
 def ip2long(ip):
@@ -13,27 +13,26 @@ def ip2long(ip):
     return struct.unpack("!L", packedIP)[0]
 
 def main():
-  flowCounts = {}
+  flowCounts = Counter()
 
   with open('header_fields.csv', 'r') as f:
     for line in f:
       fields = line.split(',')
-      if len(fields) != 5:
+      ipSrc = fields[0]
+      if len(fields) != 5 or not ipSrc:
         continue
-      # # Don't let multiplying by a prime cause overflow
-      # numPreservedHashBits = sys.getsizeof(int()) - 12
-      # hashMask = (1 << numPreservedHashBits) - 1
-      # flowId = hash(tuple(fields)) & hashMask
-      # flowId = hash(tuple(fields))
-      flowId = ip2long(fields[0])
-      if flowId in flowCounts:
-        flowCounts[flowId] += 1
-      else:
-        flowCounts[flowId] = 1
-  
-  heavyHitters = {key: value for (key, value) in flowCounts.items() if value > 1000}
+      flowId = ip2long(ipSrc)
+      flowCounts[flowId] += 1
+
+  print len(flowCounts)
+
+  k = 8
+  heavyHitters = [flow for (flow, count) in flowCounts.most_common(k)]
   print(heavyHitters)
-  pdb.set_trace() 
+
+  # Change to append mode when dealing with multiple files
+  with open('heavy_hitters_true.csv', 'w') as f:
+    f.write(','.join([str(flow) for flow in heavyHitters]))
 
 if __name__ == '__main__':
   main()
