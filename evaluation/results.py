@@ -1,19 +1,20 @@
 #!/bin/bash
 
 import pdb
-from FlowCounter import FlowCounter
+from flowCounter import FlowCounter
+from hashPipeSimulator import Simulator
 
 k = 8
+d = 6
+memorySize = 600
+inputFile = 'header_fields.csv'
 
-trueCounter = FlowCounter('header_fields.csv')
+trueCounter = FlowCounter(inputFile)
 totalFlows = trueCounter.getNumFlows()
 trueHeavyHitters = set(trueCounter.getHeavyHitters(k))
 
-simulatedHeavyHitters = set()
-with open('heavy_hitters_simulated.csv', 'r') as f:
-  for line in f:
-    for flow in line.split(','):
-      simulatedHeavyHitters.add(int(flow))
+simulator = Simulator(inputFile, d, memorySize)
+simulatedHeavyHitters = set(simulator.getHeavyHitters(k))
 
 # pdb.set_trace()
 

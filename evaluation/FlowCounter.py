@@ -1,21 +1,13 @@
 #!/bin/bash
 
 from collections import Counter
-import sys
-import pdb
-import socket, struct
+from utils import ip2long
 
-def ip2long(ip):
-  """
-  Convert an IP string to long
-  """
-  packedIP = socket.inet_aton(ip)
-  return struct.unpack("!L", packedIP)[0]
+import pdb
 
 class FlowCounter:
 
   def __init__(self, filename):
-    # TODO add param for filename
     self.counts = Counter()
     with open(filename, 'r') as f:
       for line in f:
