@@ -1,3 +1,4 @@
 *.pcap.gz
 *.csv
+*.DS_Store
 sftp-config.json
