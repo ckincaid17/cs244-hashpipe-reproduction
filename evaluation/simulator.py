@@ -78,7 +78,7 @@ def updateRollingMinimum(flowTables, carriedPacket, stage):
   else:
     return (flowId, flowCounter)
 
-def main():
+def genHeavyHitters():
   flowTables = np.zeros((d, slotsPerTable), dtype=(int,2))
 
   with open('header_fields.csv', 'r') as f:
@@ -104,11 +104,11 @@ def main():
   # pdb.set_trace()
   flowIds, flowCounts = np.split(flowTables, 2, axis=2)
   indices = np.argpartition(flowCounts.flatten(), -k)[-k:]
-  heavyHitters = flowIds.flatten()[np.argpartition(flowCounts.flatten(), -k)[-k:]]
-  # TODO address duplicates
-  # Change to append mode when dealing with multiple files
-  with open('heavy_hitters_simulated.csv', 'w') as f:
-    f.write(','.join([str(flow) for flow in heavyHitters]))
+  return flowIds.flatten()[np.argpartition(flowCounts.flatten(), -k)[-k:]]
+
+def main():
+  heavyHitters = genHeavyHitters()
+  pdb.set_trace()
 
 if __name__ == '__main__':
   main()

@@ -1,29 +1,29 @@
 #!/bin/bash
 
 import pdb
+from FlowCounter import FlowCounter
 
-totalFlows = 32122
+k = 8
 
-trueFlows = set()
-with open('heavy_hitters_true.csv', 'r') as f:
-    for line in f:
-        for flow in line.split(','):
-            trueFlows.add(flow )
+trueCounter = FlowCounter('header_fields.csv')
+totalFlows = trueCounter.getNumFlows()
+trueHeavyHitters = set(trueCounter.getHeavyHitters(k))
 
-simulatedFlows = set()
+simulatedHeavyHitters = set()
 with open('heavy_hitters_simulated.csv', 'r') as f:
-    for line in f:
-        for flow in line.split(','):
-            simulatedFlows.add(flow)
+  for line in f:
+    for flow in line.split(','):
+      simulatedHeavyHitters.add(int(flow))
 
 # pdb.set_trace()
 
-truePositives = len(simulatedFlows & trueFlows)
-falsePositives = len(simulatedFlows) - truePositives
-falseNegatives = len(trueFlows) - truePositives
-trueNegatives = totalFlows - (8 - falseNegatives) 
+truePositives = len(simulatedHeavyHitters & trueHeavyHitters)
+falsePositives = len(simulatedHeavyHitters) - truePositives
+falseNegatives = len(trueHeavyHitters) - truePositives
+trueNegatives = totalFlows - len(trueHeavyHitters) - falsePositives 
 
 falsePositiveRate = float(falsePositives) / float(falsePositives + trueNegatives)
 falseNegativeRate = float(falseNegatives) / float(falseNegatives + truePositives)
+
 print falsePositiveRate
 print falseNegativeRate

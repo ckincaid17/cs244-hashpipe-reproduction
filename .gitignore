@@ -1,4 +1,5 @@
 *.pcap.gz
 *.csv
 *.DS_Store
+*.pyc
 sftp-config.json
