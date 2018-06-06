@@ -92,3 +92,11 @@ class Simulator:
 
   def getHeavyHitters(self, k):
     return self.flowIds[np.argpartition(self.flowCounts, -k)[-k:]]
+
+  def getDuplicatePercentage(self):
+    uniqueFlows = set()
+    for row in range(self.d):
+      for col in range(self.slotsPerTable):
+         flowId = self.flowTables[row][col][0]
+         uniqueFlows.add(flowId)
+    return 1 - (len(uniqueFlows) / float(self.d * self.slotsPerTable))
