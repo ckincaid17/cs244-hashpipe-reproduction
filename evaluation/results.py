@@ -1,6 +1,9 @@
 #!/bin/bash
 
 import pdb
+import matplotlib
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 from flowCounter import FlowCounter
 from hashPipeSimulator import Simulator
@@ -24,19 +27,25 @@ def simulateOneConfiguration(k, m):
     simulator = Simulator(inputFile, d, m)
     simulatedHeavyHitters = set(simulator.getHeavyHitters(k))
 
-    truePositives = len(simulatedHeavyHitters & trueHeavyHitters)
-    falsePositives = len(simulatedHeavyHitters) - truePositives
-    falseNegatives = len(trueHeavyHitters) - truePositives
-    trueNegatives = totalFlows - len(trueHeavyHitters) - falsePositives 
+    falsePositives = len(simulatedHeavyHitters - trueHeavyHitters)
+    falseNegatives = len(trueHeavyHitters - simulatedHeavyHitters)
+    print ("False positives: %d" % falsePositives)
+    print ("False negatives: %d" % falseNegatives)
 
-    falsePositiveRate = float(falsePositives) / float(falsePositives + trueNegatives)
-    falseNegativeRate = float(falseNegatives) / float(falseNegatives + truePositives)
+    falsePositiveRate = float(falsePositives) / float(totalFlows - k)
+    falseNegativeRate = float(falseNegatives) / float(k)
+
+    print ("False positive rate: %f" % falsePositiveRate)
+    print ("False negative rate: %f" % falseNegativeRate)
 
     falseNegativeRates.append(100 * falseNegativeRate)
   return falseNegativeRates
 
 def main():
+  print ("Total flows: %d" % totalFlows)
+
   for (k, m) in configs:
+    print ("Heavy hitters: %d" % len(trueCounter.getHeavyHitters(k)))
     plt.plot(dVals, simulateOneConfiguration(k, m))
 
   plt.ylabel('False Negative %')
