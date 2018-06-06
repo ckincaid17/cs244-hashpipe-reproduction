@@ -34,10 +34,9 @@ hashB =        [73,   3079, 617,  619,  631,  641,  643,  647,  653,  659,
 
 class Simulator:
 
-  def __init__(self, filename, d, memorySize):
-    memoryPerTableSlot = 2 
+  def __init__(self, filename, d, m):
     self.d = d 
-    self.slotsPerTable = int((memorySize / self.d) / memoryPerTableSlot)
+    self.slotsPerTable = m / self.d
     self.flowTables = np.zeros((self.d, self.slotsPerTable), dtype=(int,2))
 
     with open(filename, 'r') as f:
