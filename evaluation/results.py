@@ -42,7 +42,7 @@ def main():
   plt.ylabel('False Negative %')
   plt.xlabel('Number of table stages (d)')
   plt.legend(['k = %d, m = %d' % (k, m) for (k, m) in configs], loc='best')
-  plt.show()
+  # plt.show()
 
   plt.savefig('figure_2.png')
 
