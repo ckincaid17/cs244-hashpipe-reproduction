@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from flowCounter import FlowCounter
 from hashPipeSimulator import Simulator
 
-inputFile = 'header_fields.csv'
+inputFile = 'data/header_fields.csv'
 configs = [(140, 3360), (210, 5040), (350, 6720), (420, 8400)]
 dVals = range(2, 9)
 
