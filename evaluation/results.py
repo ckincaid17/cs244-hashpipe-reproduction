@@ -45,25 +45,33 @@ def simulateOneConfiguration(k, m):
 
 def findDupPercentage(d):
   duplicatePercentages = []
+  print ("d = %d", d)
   for m in mVals:
     simulator = Simulator(inputFile, d, m)
-    duplicatePercentages.append(simulator.getDuplicatePercentage())
+    duplicatePercentage = simulator.getDuplicatePercentage()
+    duplicatePercentages.append(duplicatePercentage)
+    print ("Duplicate percentage for m=%d: %d" % (m, duplicatePercentage))
   return duplicatePercentages
 
 def main():
   print ("Total flows: %d" % totalFlows)
-  colors = ['r', 'b', 'k', 'm']
-  shapes = ['s', 'o', 'D', '*']
-  for i, (k, m) in enumerate(configs):
-    plt.plot(dVals, simulateOneConfiguration(k, m), color=colors[i], marker=shapes[i])
 
-  plt.ylabel('False Negative %')
-  plt.xlabel('Number of table stages (d)')
-  plt.legend(['k = %d, m = %d' % (k, m) for (k, m) in configs], loc='best')
+  # Figure 2, false negatives
+  # print ("Finding false negatives")
+  # colors = ['r', 'b', 'k', 'm']
+  # shapes = ['s', 'o', 'D', '*']
+  # for i, (k, m) in enumerate(configs):
+  #   plt.plot(dVals, simulateOneConfiguration(k, m), color=colors[i], marker=shapes[i])
 
-  plt.savefig('figure_2.png')
-  plt.close()
+  # plt.ylabel('False Negative %')
+  # plt.xlabel('Number of table stages (d)')
+  # plt.legend(['k = %d, m = %d' % (k, m) for (k, m) in configs], loc='best')
 
+  # plt.savefig('figure_2_ISP_2016.png')
+  # plt.close()
+
+  # Figure 3, duplicates
+  print ("Finding duplicates")
   colors = ['r', 'k', 'c']
   linestyles = ['--', '-.', ':']
   for i, d in enumerate([2, 4, 8]):
@@ -73,7 +81,7 @@ def main():
   plt.xlabel('Memory (in KB)')
   plt.legend(['d = %d' % d for d in [2, 4, 8]], loc='best')
 
-  plt.savefig('figure_3.png')
+  plt.savefig('figure_3_ISP_2016.png')
 
 if __name__ == '__main__':
   main()
