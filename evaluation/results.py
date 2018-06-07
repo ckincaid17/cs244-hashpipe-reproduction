@@ -10,8 +10,9 @@ from hashPipeSimulator import Simulator
 
 inputFile = 'data/header_fields_ISP.csv'
 configs = [(140, 3360), (210, 5040), (350, 6720), (420, 8400)]
-dVals = range(2, 5)
-mVals = [840 * i for i in range(1, 9)]
+
+dVals = range(2, 9)
+mVals = [840 * i for i in range(1, 6)]
 
 trueCounter = FlowCounter(inputFile)
 totalFlows = trueCounter.getNumFlows()
