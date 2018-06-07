@@ -46,6 +46,8 @@ class Simulator:
         if len(fields) != 5 or not ipSrc:
           continue
         flowId = ip2long(ipSrc)
+        if (flowId < 0):
+          continue
         carriedPacket = self.insertInFirstStage(flowId)
         # Assume stage 0 was first stage
         stage = 1
@@ -92,3 +94,11 @@ class Simulator:
 
   def getHeavyHitters(self, k):
     return self.flowIds[np.argpartition(self.flowCounts, -k)[-k:]]
+
+  def getDuplicatePercentage(self):
+    uniqueFlows = set()
+    for row in range(self.d):
+      for col in range(self.slotsPerTable):
+         flowId = self.flowTables[row][col][0]
+         uniqueFlows.add(flowId)
+    return 1 - (len(uniqueFlows) / float(self.d * self.slotsPerTable))
