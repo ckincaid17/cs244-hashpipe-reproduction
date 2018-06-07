@@ -45,12 +45,12 @@ def simulateOneConfiguration(k, m):
 
 def findDupPercentage(d):
   duplicatePercentages = []
-  print ("d = %d", d)
+  print ("d = %d" % d)
   for m in mVals:
     simulator = Simulator(inputFile, d, m)
     duplicatePercentage = simulator.getDuplicatePercentage()
     duplicatePercentages.append(duplicatePercentage)
-    print ("Duplicate percentage for m=%d: %d" % (m, duplicatePercentage))
+    print ("Duplicate percentage for m=%d: %f" % (m, duplicatePercentage))
   return duplicatePercentages
 
 def main():
