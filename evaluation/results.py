@@ -8,11 +8,13 @@ import matplotlib.pyplot as plt
 from flowCounter import FlowCounter
 from hashPipeSimulator import Simulator
 
-inputFile = 'data/header_fields_ISP.csv'
+inputFile = 'data/header_fields_ISP_16.csv'
 configs = [(140, 3360), (210, 5040), (350, 6720), (420, 8400)]
 
 dVals = range(2, 9)
 mVals = [840 * i for i in range(1, 6)]
+
+# 840, 40 (m, k) for datacenter 
 
 trueCounter = FlowCounter(inputFile)
 totalFlows = trueCounter.getNumFlows()
@@ -67,19 +69,19 @@ def main():
   # plt.xlabel('Number of table stages (d)')
   # plt.legend(['k = %d, m = %d' % (k, m) for (k, m) in configs], loc='best')
 
-  # plt.savefig('figure_2_ISP_2016.png')
+  # plt.savefig('figure_2_DC.png')
   # plt.close()
 
   # Figure 3, duplicates
   print ("Finding duplicates")
   colors = ['r', 'k', 'c']
   linestyles = ['--', '-.', ':']
-  for i, d in enumerate([2, 4, 8]):
-    plt.plot([m / 840 * 15000 for m in mVals], findDupPercentage(d), color=colors[i], ls=linestyles[i])
+  for i, d in enumerate([8, 4, 2]):
+    plt.plot([m / 840 * 15 for m in mVals], findDupPercentage(d), color=colors[i], ls=linestyles[i])
 
   plt.ylabel('Duplicate Entries %')
   plt.xlabel('Memory (in KB)')
-  plt.legend(['d = %d' % d for d in [2, 4, 8]], loc='best')
+  plt.legend(['d = %d' % d for d in [8, 4, 2]], loc='best')
 
   plt.savefig('figure_3_ISP_2016.png')
 
