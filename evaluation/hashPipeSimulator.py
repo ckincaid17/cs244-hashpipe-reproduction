@@ -93,7 +93,7 @@ class Simulator:
       return (flowId, flowCounter)
 
   def getHeavyHitters(self, k):
-    top2kFlows = self.flowIds[np.argpartition(self.flowCounts, -2k)[-2k:]]
+    top2kFlows = self.flowIds[np.argpartition(self.flowCounts, -2*k)[-2*k:]]
     uniqueHeavyHitters = set(top2kFlows[-k:])
     nextCandidateIndex = k - 1
     while len(uniqueHeavyHitters) < k and nextCandidateIndex >= 0:
