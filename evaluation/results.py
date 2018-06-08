@@ -24,11 +24,11 @@ def simulateOneConfiguration(k, m):
 
   falseNegativeRates = []
 
-  trueHeavyHitters = set(trueCounter.getHeavyHitters(k))
+  trueHeavyHitters = trueCounter.getHeavyHitters(k)
 
   for d in dVals:
     simulator = Simulator(inputFile, d, m)
-    simulatedHeavyHitters = set(simulator.getHeavyHitters(k))
+    simulatedHeavyHitters = simulator.getHeavyHitters(k)
 
     falsePositives = len(simulatedHeavyHitters - trueHeavyHitters)
     falseNegatives = len(trueHeavyHitters - simulatedHeavyHitters)
