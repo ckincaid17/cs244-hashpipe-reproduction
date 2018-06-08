@@ -22,4 +22,4 @@ class FlowCounter:
     return len(self.counts)   
 
   def getHeavyHitters(self, k):
-    return [flow for (flow, count) in self.counts.most_common(k)]
+    return set([flow for (flow, count) in self.counts.most_common(k)])
