@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from flowCounter import FlowCounter
 from hashPipeSimulator import Simulator
 
-inputFile = 'data/header_fields_ISP_16.csv'
+inputFile = 'data/header_fields_DC.csv'
 configs = [(140, 3360), (210, 5040), (350, 6720), (420, 8400)]
 
 dVals = range(2, 9)
@@ -49,9 +49,12 @@ def findDupPercentage(d):
   duplicatePercentages = []
   print ("d = %d" % d)
   for m in mVals:
+    print ("m axis = %d" % ((m / 840 * 15)/10.0))
+    m = m/10
+    print ("m = %d" % m)
     simulator = Simulator(inputFile, d, m)
     duplicatePercentage = simulator.getDuplicatePercentage()
-    duplicatePercentages.append(duplicatePercentage)
+    duplicatePercentages.append(100 * duplicatePercentage)
     print ("Duplicate percentage for m=%d: %f" % (m, duplicatePercentage))
   return duplicatePercentages
 
@@ -77,13 +80,13 @@ def main():
   colors = ['r', 'k', 'c']
   linestyles = ['--', '-.', ':']
   for i, d in enumerate([8, 4, 2]):
-    plt.plot([m / 840 * 15 for m in mVals], findDupPercentage(d), color=colors[i], ls=linestyles[i])
+    plt.plot([(m / 840 * 15)/10.0 for m in mVals], findDupPercentage(d), color=colors[i], ls=linestyles[i])
 
   plt.ylabel('Duplicate Entries %')
   plt.xlabel('Memory (in KB)')
   plt.legend(['d = %d' % d for d in [8, 4, 2]], loc='best')
 
-  plt.savefig('figure_3_ISP_2016.png')
+  plt.savefig('figure_3_DC.png')
 
 if __name__ == '__main__':
   main()
