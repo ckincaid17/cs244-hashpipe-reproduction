@@ -25,7 +25,7 @@ mVals_ISP = [840 * i for i in range(1, 6)]
 mVals_DC = [84 * i for i in range(1, 6)]
 
 # Values of k for figure 6
-kVals = range(0, 160)
+kVals = range(20, 160)
 
 # Values for m in figure 6
 mVal_fig6_ISP = [3000]
@@ -34,6 +34,7 @@ mVal_fig6_DC = [300]
 def findFalseNegativePercent(simulator, trueHeavyHitters, totalFlows, k):
   
   simulatedHeavyHitters = simulator.getHeavyHitters(k)
+  print ("num heavy hitters %d" % len(simulatedHeavyHitters))
 
   falsePositives = len(simulatedHeavyHitters - trueHeavyHitters)
   falseNegatives = len(trueHeavyHitters - simulatedHeavyHitters)
@@ -51,12 +52,13 @@ def findFalseNegativePercent(simulator, trueHeavyHitters, totalFlows, k):
 def findFalseNegativePercentByK(inputFile, trueCounter, d, m):
   falseNegativeRates = []
 
-  trueHeavyHitters = trueCounter.getHeavyHitters(k)
   totalFlows = trueCounter.getNumFlows()
   simulator = Simulator(inputFile, d, m)
 
   for k in kVals:
-    falseNegativeRates.append(100 * findFalseNegativePercent(simulator, trueHeavyHitters, totalFlows, k)
+    print("k = %d" % k)
+    trueHeavyHitters = trueCounter.getHeavyHitters(k)
+    falseNegativeRates.append(100 * findFalseNegativePercent(simulator, trueHeavyHitters, totalFlows, k))
 
   return falseNegativeRates
 
@@ -68,7 +70,7 @@ def findFalseNegativePercentByD(inputFile, trueCounter, k, m):
 
   for d in dVals:
     simulator = Simulator(inputFile, d, m)
-    falseNegativeRates.append(100 * findFalseNegativePercent(simulator, trueHeavyHitters, totalFlows, k)
+    falseNegativeRates.append(100 * findFalseNegativePercent(simulator, trueHeavyHitters, totalFlows, k))
 
   return falseNegativeRates
 
@@ -76,7 +78,6 @@ def findDupPercentage(inputFile, d, mVals):
   duplicatePercentages = []
   print ("d = %d" % d)
   for m in mVals:
-    print ("m = %d" % m)
     simulator = Simulator(inputFile, d, m)
     duplicatePercentage = simulator.getDuplicatePercentage()
     
@@ -98,6 +99,7 @@ def generateFigures(inputFile, dataName, configs, mVals, mVal_fig6):
   colors = ['r', 'b', 'k', 'm']
   shapes = ['s', 'o', 'D', '*']
   for i, (k, m) in enumerate(configs):
+    print("\nk=%d, m=%d" % (k,m))
     plt.plot(dVals, findFalseNegativePercentByD(inputFile, trueCounter, k, m), color=colors[i], marker=shapes[i])
 
   plt.ylabel('False Negative %')
@@ -111,7 +113,8 @@ def generateFigures(inputFile, dataName, configs, mVals, mVal_fig6):
   colors = ['r', 'k', 'c']
   linestyles = ['--', '-.', ':']
   for i, d in enumerate([8, 4, 2]):
-    plt.plot([(m / 840 * 15)/10.0 for m in mVals], findDupPercentage(inputFile, d, mVals), color=colors[i], ls=linestyles[i])
+    print("\n")
+    plt.plot([(m / 840.0 * 15) for m in mVals], findDupPercentage(inputFile, d, mVals), color=colors[i], ls=linestyles[i])
 
   plt.ylabel('Duplicate Entries %')
   plt.xlabel('Memory (in KB)')
@@ -122,9 +125,8 @@ def generateFigures(inputFile, dataName, configs, mVals, mVal_fig6):
   # Figure 6, which heavy hitters are missed
   print ("Finding false negatives against varying k")
   colors = ['r', 'k', 'c']
-  linestyles = ['--', '-.', ':']
   for i, m in enumerate(mVal_fig6):
-    plt.plot(kVals, findFalseNegativePercentByK(inputFile, trueCounter, 4, m), color=colors[i], ls=linestyles[i])
+    plt.plot(kVals, findFalseNegativePercentByK(inputFile, trueCounter, 4, m), color=colors[i])
 
   plt.ylabel('False negative %')
   plt.xlabel('Number of heavy hitters (k)')
@@ -134,8 +136,8 @@ def generateFigures(inputFile, dataName, configs, mVals, mVal_fig6):
 
 
 def main():
-  generateFigures(ISP_file, "ISP_2016", configs_ISP, mVals_ISP)
-  generateFigures(datacenter_file, "DC", configs_DC, mVals_DC)
+  generateFigures(ISP_file, "ISP_2016", configs_ISP, mVals_ISP, mVal_fig6_ISP)
+  generateFigures(datacenter_file, "DC", configs_DC, mVals_DC, mVal_fig6_DC)
   print ("All done!")
   
   

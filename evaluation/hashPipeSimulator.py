@@ -93,16 +93,15 @@ class Simulator:
       return (flowId, flowCounter)
 
   def getHeavyHitters(self, k):
-    top2kFlows = self.flowIds[np.argpartition(self.flowCounts, -2*k)[-2*k:]]
-    uniqueHeavyHitters = set(top2kFlows[-k:])
-    nextCandidateIndex = k - 1
-    while len(uniqueHeavyHitters) < k and nextCandidateIndex >= 0:
-      uniqueHeavyHitters.add(top2kFlows[nextCandidateIndex])
-      nextCandidateIndex -= 1
-    if len(uniqueHeavyHitters) < k:
-      print('WARNING: Did not get k heavy hitters')
-    return uniqueHeavyHitters
-    # return set(self.flowIds[np.argpartition(self.flowCounts, -k)[-k:]])
+    # sortedFlows = self.flowIds[np.argsort(self.flowCounts)]
+    # uniqueHeavyHitters = set()
+    # # Start at most heavy-hitting flow, accumulate until you find k unique flows
+    # for flowId in reversed(sortedFlows):
+    #   uniqueHeavyHitters.add(flowId)
+    #   if len(uniqueHeavyHitters) == k:
+    #     break
+    # return uniqueHeavyHitters
+    return set(self.flowIds[np.argpartition(self.flowCounts, -k)[-k:]])
 
   def getDuplicatePercentage(self):
     uniqueFlows = set()
