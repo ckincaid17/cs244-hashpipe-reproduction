@@ -4,7 +4,7 @@
 Sierra Kaplan-Nelson and Colin Kincaid's (reproducible) reproduction of "Detecting Heavy-Hitters Entirely in the Data Plane" by Sivaraman et al.
 
 
-## Running the demo
+## Running our code
 
 For instructions on setting up P4 and running our code, see the `README` file in the `p4_code` folder.
 
