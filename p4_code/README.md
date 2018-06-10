@@ -29,7 +29,23 @@ You will also need to run the veth_setup.sh script included in this directory as
 
 The HashPipe algorithm requires custom hash functions that use different unique primes for each stage, so that the same flow can be hashed to multiple slots in the hash table in multiple stages. Adding these hash functions to the behavioral model is simple but is necessary before running our code. Copy the hash functions we provide in the hash_functions.cpp file to this file in the bmv2 repository: https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp. They go on line 34 above other example custom hash functions. Once doing this remake `bmv2`.
 
-That's all :)
+That's all for setup :)
+
+## Description of files
+
+Much of this code was based on or directly taken from Vibhaalakshmi Sivaraman's original implementation of this algorithm. Her P4 code can be found here: https://github.com/vibhaa/iw15-heavyhitters/tree/master/p4v1_1/. We tried to rewrite the algorithm in P4 with her code as a reference.
+
+`p4src` contains the actual p4 code. `simple_router.p4` is taken from the P4 language's example code with 
+`apply(track_stage1);`
+`apply(track_stage2);`
+added to the ingress control. These actions are described in `hashpipe.p4` where the actual algorithm to update the flow trackers and packet counters is written.
+
+The other files in this folder help perform a demo on the P4 behavioral model. `send.py` sends packets from a csv trace through the switch. `receive.py` handles receiving the packets. `run_demo.sh` compiles our P4 code for the behavioral model and runs it, so that when it's ready we can send and receive packets. `read_registers.sh` prints out the values in the flow tracker and packet counter registers for each stage so that they can be compared against the simulator.
 
 ## Running our code
+
+
+
+
+
 

@@ -1,8 +1,8 @@
 # cs244-hashpipe-reproduction
 
 ## Description
-Sierra Kaplan-Nelson and Colin Kincaid's (reproducible) reproduction of "Detecting Heavy-Hitters Entirely in the Data Plane" by Sivaraman et al.
 
+Sierra Kaplan-Nelson and Colin Kincaid's (reproducible) reproduction of "Detecting Heavy-Hitters Entirely in the Data Plane" by Sivaraman et al. See our final report pdf as `final_paper.pdf` in this directory.
 
 ## Running our code
 
@@ -38,4 +38,4 @@ The evaluation folder contains all of the files needed to reproduce the HashPipe
 
 `utils.py` - Contains utility functions
 
-The `p4_code` folder contains all of the code relevant to our reproduction of the HashPipe algorithm in P4.
+The `p4_code` folder contains all of the code relevant to our reproduction of the HashPipe algorithm in P4. See the README in that folder for more information.
