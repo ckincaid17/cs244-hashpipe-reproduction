@@ -1,8 +1,8 @@
 Instructions on how to run P4 Code:
 
-The following instructions are modified from https://github.com/p4lang/tutorials/tree/master/examples:
-
 ## Obtaining required software
+
+The following instructions are modified from https://github.com/p4lang/tutorials/tree/master/examples:
 
 You will need to clone 2 p4lang Github repositories and install their dependencies. To clone the repositories:
 
@@ -19,10 +19,17 @@ bmv2 is a C++ repository and has more external dependencies. They are listed in 
 `./configure`
 `make`
 
-## Before starting the exercises
+## Before running our code
 
-You need to tell us where you cloned the `bmv2` and `p4c-bm` repositories :). Please update the values of the shell variables `BMV2_PATH` and `P4C_BM_PATH` in the `env.sh` file - located in the directory `p4_code` (this directory). Note that if you cloned both repositories in the same directory as this one (cs244-hashpipe-reproduction), you will not need to change the value of the variables.
+You need to tell P4 where you cloned the `bmv2` and `p4c-bm` repositories :). Please update the values of the shell variables `BMV2_PATH` and `P4C_BM_PATH` in the `env.sh` file - located in the directory `p4_code` (this directory). Note that if you cloned both repositories in the same directory as this outer one (cs244-hashpipe-reproduction), you will not need to change the value of the variables.
 
 You will also need to run the veth_setup.sh script included in this directory as sudo to setup the veth interfaces needed by the switch.
 
+## Custom hash functions
+
+The HashPipe algorithm requires custom hash functions that use different unique primes for each stage, so that the same flow can be hashed to multiple slots in the hash table in multiple stages. Adding these hash functions to the behavioral model is simple but is necessary before running our code. Copy the hash functions we provide in the hash_functions.cpp file to this file in the bmv2 repository: https://github.com/p4lang/behavioral-model/blob/master/targets/simple_switch/simple_switch.cpp. They go on line 34 above other example custom hash functions. Once doing this remake `bmv2`.
+
 That's all :)
+
+## Running our code
+
